@@ -25,13 +25,13 @@ router.get('/:id', (req,res, next) => {
 // Créer un compte
 router.post('/', (req,res) => {
     const newDecklist = new DecklistModel({
-        cardId: req.body.cardId,
-        collectionId: req.body.collectionId,
+        userId: req.body.userId,
+        deckId: req.body.deckId,
     });
 
     newDecklist.save((err,docs) => {
         if (!err) res.send(docs);
-        else console.log('Error creating new card : ' + err);
+        else console.log('Error creating new deck : ' + err);
             
     })
 })
@@ -42,8 +42,8 @@ router.put('/:id', (req,res) => {
         return res.status(400).send("ID unknown : " + req.params.id)
     else{
         const updateDecklist = {
-            cardId: req.body.cardId,
-            collectionId: req.body.collectionId,
+            userId: req.body.userId,
+            deckId: req.body.deckId,
         };
 
         DecklistModel.findByIdAndUpdate(

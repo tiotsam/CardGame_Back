@@ -3,6 +3,8 @@ const router = express.Router();
 const ObjectID = require('mongoose').Types.ObjectId;
 
 const { CardsModel } = require('../models/CardsModel');
+const { CollectionModel } = require('../models/CollectionModel');
+const { DeckModel } = require('../models/DeckModel');
 
 // Afficher toutes les cartes
 router.get('/', (req,res) => {
@@ -78,6 +80,20 @@ router.delete("/:id", (req,res) => {
         return res.status(400).send("ID unknown : " + req.params.id)
     else{
         CardsModel.findByIdAndRemove(
+            req.params.id,
+            (err,docs) => {
+                if(!err) res.send(docs);
+                else console.log("Delete error : " + err);
+            }
+        );
+        CollectionModel.findByIdAndRemove(
+            req.params.id,
+            (err,docs) => {
+                if(!err) res.send(docs);
+                else console.log("Delete error : " + err);
+            }
+        );
+        DeckModel.findByIdAndRemove(
             req.params.id,
             (err,docs) => {
                 if(!err) res.send(docs);
