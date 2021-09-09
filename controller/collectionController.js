@@ -8,7 +8,7 @@ const { UserModel } = require('../models/UserModel');
 
 // Afficher toutes les collection
 router.get('/', (req,res) => {
-    CardsModel.find((err,docs)=> {
+    CollectionModel.find((err,docs)=> {
         if(!err) res.send(docs);
         else console.log("Error to get data : " + err);
     })
@@ -16,7 +16,7 @@ router.get('/', (req,res) => {
 
 // Chercher seulement une collection
 router.get("/:id", (req,res, next) => {
-    CardsModel.findById(req.params.id, (err,docs)=>{
+    CollectionModel.findById(req.params.id, (err,docs)=>{
         if(!err) res.send(docs);
         else{
             console.log("Error to get data : " + err);
