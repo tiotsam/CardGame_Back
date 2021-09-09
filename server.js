@@ -6,7 +6,7 @@ const cors = require('cors');
 
 // Connection à la base de donnée
 require('./models/db_config');
-const cardsRoutes = require('./Controller/cardsController');
+const cardsRoutes = require('./controller/cardsController');
 
 // Body Parser
 app.use(express.json());
