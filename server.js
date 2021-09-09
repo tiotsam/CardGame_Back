@@ -8,7 +8,7 @@ const cors = require('cors');
 require('./models/db_config');
 const cardsRoutes = require('./controller/cardsController');
 const collectionRoutes = require('./controller/collectionController');
-const userRoutes = require('./controller/userController');
+const usersRoutes = require('./controller/userController');
 
 // Body Parser
 app.use(express.json());
@@ -23,7 +23,7 @@ app.use(cors({origin: 'http://localhost:3000'}));
 // Routes
 app.use('/cards/', cardsRoutes);
 app.use('/collection/', collectionRoutes);
-app.use('/users/',userRoutes);
+app.use('/users/', usersRoutes);
 
 // Lancement server
 app.listen(process.env.PORT,()=>{ console.log(`Listening on port ${process.env.PORT}`);})
