@@ -1,18 +1,19 @@
 const mongoose = require("mongoose");
 
-const CollectionModel = mongoose.model(
-    "CardGame",
+const CollectionModel = mongoose.model('Collection', new mongoose.Schema(
     {
-        id_card: {
-            type: String,
+        cardId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Cards',
             required: true
         },
-        id_User: {
-            type: String,
+        userId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Users',
             required: true
         }
-    },
-    "Collection"
-);
+    }
+))
 
-module.exports = {CollectionModel};
+
+module.exports = { CollectionModel };
