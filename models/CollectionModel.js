@@ -16,5 +16,4 @@ const CollectionModel = mongoose.model('Collection', new mongoose.Schema(
     }
 ))
 
-
 module.exports = { CollectionModel };
