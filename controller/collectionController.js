@@ -3,6 +3,8 @@ const router = express.Router();
 const ObjectID = require('mongoose').Types.ObjectId;
 
 const { CollectionModel } = require('../models/CollectionModel');
+const { CardsModel } = require('../models/CardsModel');
+const { UserModel } = require('../models/UserModel');
 
 // Afficher toutes les collection
 router.get('/', (req,res) => {
@@ -30,9 +32,12 @@ router.post('/', (req,res) => {
         userId: req.body.userId
     });
 
-    newCollection.save((err,docs) => {
+    newCollection.save((err,docs,next) => {
         if (!err) res.send(docs);
-        else console.log('Error creating new cards : ' + err);
+        else{
+            console.log('Error creating new cards : ' + err)
+            return next();
+        } ;
             
     })
 })

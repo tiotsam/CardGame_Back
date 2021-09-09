@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+
 const CollectionModel = mongoose.model('Collection', new mongoose.Schema(
     {
         cardId: {
