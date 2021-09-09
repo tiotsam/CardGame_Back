@@ -10,6 +10,7 @@ const cardsRoutes = require('./controller/cardsController');
 const collectionRoutes = require('./controller/collectionController');
 const usersRoutes = require('./controller/userController');
 const deckRoutes = require('./controller/deckController');
+const decklistRoutes = require('./controller/listeDeckController');
 
 // Body Parser
 app.use(express.json());
@@ -26,6 +27,7 @@ app.use('/cards/', cardsRoutes);
 app.use('/collection/', collectionRoutes);
 app.use('/users/', usersRoutes);
 app.use('/deck/', deckRoutes);
+app.use('/decklist/', decklistRoutes);
 
 // Lancement server
 app.listen(process.env.PORT,()=>{ console.log(`Listening on port ${process.env.PORT}`);})
