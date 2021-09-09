@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const CollectionModel = mongoose.model('Collection', new mongoose.Schema(
     {
         cardId: {
-            type: mongoose.Schema.Types.ObjectId,
+            type: [mongoose.Schema.Types.ObjectId],
             ref: 'Cards',
             required: true
         },
