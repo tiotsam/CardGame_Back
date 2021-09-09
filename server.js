@@ -9,6 +9,7 @@ require('./models/db_config');
 const cardsRoutes = require('./controller/cardsController');
 const collectionRoutes = require('./controller/collectionController');
 const usersRoutes = require('./controller/userController');
+const deckRoutes = require('./controller/deckController');
 
 // Body Parser
 app.use(express.json());
@@ -24,6 +25,7 @@ app.use(cors({origin: 'http://localhost:3000'}));
 app.use('/cards/', cardsRoutes);
 app.use('/collection/', collectionRoutes);
 app.use('/users/', usersRoutes);
+app.use('/deck/', deckRoutes);
 
 // Lancement server
 app.listen(process.env.PORT,()=>{ console.log(`Listening on port ${process.env.PORT}`);})
