@@ -86,24 +86,24 @@ router.delete("/:id", (req,res) => {
                 else console.log("Delete error : " + err);
             }
         );
-        CollectionModel.updateMany(
-            {},
-            { $pull: { cardId: req.params.id }},
-            { new: true, upsert: true },
-            (err, docs)=> {
-                if (!err) res.status(201).json(docs);
-                else return res.status(400).json(err);
-            }
-        );
-        DeckModel.updateMany(
-            {},
-            { $pull: { cardId: req.params.id }},
-            { new: true, upsert: true },
-            (err, docs)=> {
-                if (!err) res.status(201).json(docs);
-                else return res.status(400).json(err);
-            }
-        );
+        // CollectionModel.updateMany(
+        //     {},
+        //     { $pull: { cardId: req.params.id }},
+        //     { new: true, upsert: true },
+        //     (err, docs)=> {
+        //         if (!err) res.status(201).json(docs);
+        //         else return res.status(400).json(err);
+        //     }
+        // );
+        // DeckModel.updateMany(
+        //     {},
+        //     { $pull: { cardId: req.params.id }},
+        //     { new: true, upsert: true },
+        //     (err, docs)=> {
+        //         if (!err) res.status(201).json(docs);
+        //         else return res.status(400).json(err);
+        //     }
+        // );
     }
 })
 
