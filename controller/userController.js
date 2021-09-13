@@ -23,7 +23,7 @@ router.get('/:id', (req,res, next) => {
 })
 
 // Créer un compte
-router.post('/register', (req,res) => {
+router.post('/register', (req,res,next) => {
     const newUser = new UserModel({
         nom: req.body.nom,
         prenom: req.body.prenom,
@@ -36,7 +36,10 @@ router.post('/register', (req,res) => {
 
     newUser.save((err,docs) => {
         if (!err) res.send(docs);
-        else console.log('Error creating new user : ' + err);
+        else {
+            console.log('Error creating new user : ' + err);
+            next();
+        } 
             
     })
 })

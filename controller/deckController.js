@@ -24,16 +24,20 @@ router.get('/:id', (req,res, next) => {
 
 // Créer un compte
 router.post('/register', (req,res) => {
-    const newDeck = new DeckModel({
-        cardId: req.body.cardId,
-        collectionId: req.body.collectionId,
-    });
-
-    newDeck.save((err,docs) => {
-        if (!err) res.send(docs);
-        else console.log('Error creating new card : ' + err);
-            
-    })
+    if (!ObjectID.isValid(req.body.collectionId))
+    return res.status(400).send("ID unknown : " + req.body.collectionId)
+    else{
+        const newDeck = new DeckModel({
+            cardId: req.body.cardId,
+            collectionId: req.body.collectionId,
+        });
+    
+        newDeck.save((err,docs) => {
+            if (!err) res.send(docs);
+            else console.log('Error creating new card : ' + err);
+                
+        })
+    }
 })
 
 // Modifier info user

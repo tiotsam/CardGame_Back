@@ -27,19 +27,24 @@ router.get("/:id", (req,res, next) => {
 
 // Créer une collection
 router.post('/', (req,res) => {
-    const newCollection = new CollectionModel({
-        cardId: req.body.cardId,
-        userId: req.body.userId
-    });
+    if(!ObjectID.isValid(req.body.userId))
+    return res.status(400).send("ID unknown : " + req.body.userId)
+    else{
+        const newCollection = new CollectionModel({
+            cardId: req.body.cardId,
+            userId: req.body.userId
+        });
+    
+        newCollection.save((err,docs,next) => {
+            if (!err) res.send(docs);
+            else{
+                console.log('Error creating new cards : ' + err)
+                return next();
+            } ;
+                
+        })
 
-    newCollection.save((err,docs,next) => {
-        if (!err) res.send(docs);
-        else{
-            console.log('Error creating new cards : ' + err)
-            return next();
-        } ;
-            
-    })
+    }
 })
 
 // Modifier une collection

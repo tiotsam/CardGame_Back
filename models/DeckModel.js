@@ -11,6 +11,6 @@ const DeckModel = mongoose.model('Decks', new Schema({
             type: String,
             ref: 'Collection'
         }
-    }));
+}));
 
 module.exports = {DeckModel};
