@@ -3,7 +3,7 @@ const router = express.Router();
 const ObjectID = require('mongoose').Types.ObjectId;
 
 const { CollectionModel } = require('../models/CollectionModel');
-const { CardsModel } = require('../models/CardsModel');
+const { DeckModel } = require('../models/DeckModel');
 const { UserModel } = require('../models/UserModel');
 
 // Afficher toutes les collection
@@ -71,19 +71,23 @@ router.put("/:id", (req,res) => {
 
 // Supprimer une collection
 
-router.delete("/:id", (req,res) => {
+router.delete("/:id", async (req,res) => {
     if (!ObjectID.isValid(req.params.id))
         return res.status(400).send("ID unknown : " + req.params.id)
     else{
-        CardsModel.findByIdAndRemove(
-            req.params.id,
-            (err,docs) => {
-                if(!err) res.send(docs);
-                else console.log("Delete error : " + err);
-            }
-        );
+        try {
+            const listDeck = await DeckModel.find({collectionId: req.params.id}).exec()       
+            const firstReturn = listDeck.map(async (elem) =>{
+                await DeckModel.findByIdAndRemove(elem);
+            })
+            const secondReturn = await CollectionModel.findByIdAndRemove(req.params.id)
+            res.status(201).json({firstReturn,secondReturn})
+        }catch(exception) {
+            res.status(400).json({...exception})
+        }
     }
 })
+
 
 
 module.exports = router;

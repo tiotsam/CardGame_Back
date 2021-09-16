@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const ObjectID = require('mongoose').Types.ObjectId;
 const { UserModel } = require('../models/UserModel');
+const { CollectionModel } = require('../models/CollectionModel');
+const { DeckModel } = require('../models/DeckModel');
+const { DecklistModel } = require('../models/ListeDeckModel');
 
 // Afficher tous les users
 router.get('/', (req, res) => {
@@ -75,20 +78,42 @@ router.put('/:id', (req, res) => {
     }
 })
 
-// Supprimer une carte
-
-router.delete('/:id', (req, res) => {
-    if (!ObjectID.isValid(req.params.id))
+// Supprimer un utilisateur
+router.delete("/:id", async (req,res,next) => {
+    if (!ObjectID.isValid(req.params.id)){
         return res.status(400).send("ID unknown : " + req.params.id)
-    else {
-        UserModel.findByIdAndRemove(
-            req.params.id,
-            (err, docs) => {
-                if (!err) res.send(docs);
-                else console.log("Delete error : " + err);
-            }
-        );
+        next();
+    }
+    else{
+        try {
+            const firstReturn =  await UserModel.findByIdAndRemove(req.params.id)
+            const secondReturn = await CollectionModel.deleteMany({userId: req.params.id})
+            const listDeck = await DecklistModel.find({userId: req.params.id}).exec()            
+            const thirdReturn = listDeck.map(async (elem) =>{
+                console.log(elem.deckId);
+                elem.deckId.map( async (el) => await DeckModel.findByIdAndRemove(el))
+            })
+            const fourthReturn = await DecklistModel.deleteMany({userId: req.params.id})
+            res.status(201).json({firstReturn,secondReturn,thirdReturn,fourthReturn})
+        }catch(exception) {
+            res.status(400).json({...exception})
+        }
     }
 })
+
+
+// router.delete('/:id', (req, res) => {
+//     if (!ObjectID.isValid(req.params.id))
+//         return res.status(400).send("ID unknown : " + req.params.id)
+//     else {
+//         UserModel.findByIdAndRemove(
+//             req.params.id,
+//             (err, docs) => {
+//                 if (!err) res.send(docs);
+//                 else console.log("Delete error : " + err);
+//             }
+//         );
+//     }
+// })
 
 module.exports = router;

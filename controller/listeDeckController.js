@@ -2,8 +2,9 @@ const express = require('express');
 const router = express.Router();
 const ObjectID = require('mongoose').Types.ObjectId;
 const { DecklistModel } = require('../models/ListeDeckModel');
+const { DeckModel } = require('../models/DeckModel');
 
-// Afficher tous les users
+// Afficher toutes les decklist
 router.get('/', (req, res) => {
     DecklistModel.find((err, docs) => {
         if (!err) res.send(docs);
@@ -11,7 +12,7 @@ router.get('/', (req, res) => {
     })
 })
 
-// Chercher user par id
+// Chercher decklist par id
 router.get('/:id', (req, res, next) => {
     DecklistModel.findById(req.params.id, (err, docs) => {
         if (!err) res.send(docs);
@@ -22,7 +23,7 @@ router.get('/:id', (req, res, next) => {
     })
 })
 
-// Créer un compte
+// Créer une liste de deck
 router.post('/', (req, res) => {
     if (!ObjectID.isValid(req.body.userId))
         return res.status(400).send("ID unknown : " + req.body.userId)
@@ -40,7 +41,7 @@ router.post('/', (req, res) => {
     }
 })
 
-// Modifier info user
+// Modifier liste de deck
 router.put('/:id', (req, res) => {
     if (!ObjectID.isValid(req.params.id))
         return res.status(400).send("ID unknown : " + req.params.id)
@@ -62,19 +63,22 @@ router.put('/:id', (req, res) => {
     }
 })
 
-// Supprimer une carte
+// Supprimer une liste de deck
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
     if (!ObjectID.isValid(req.params.id))
         return res.status(400).send("ID unknown : " + req.params.id)
-    else {
-        DecklistModel.findByIdAndRemove(
-            req.params.id,
-            (err, docs) => {
-                if (!err) res.send(docs);
-                else console.log("Delete error : " + err);
-            }
-        );
+    else{
+        try {
+            const listDeck = await DecklistModel.findById(req.params.id)        
+            const firstReturn = listDeck.deckId.map(async (elem) =>{
+                await DeckModel.findByIdAndRemove(elem);
+            })
+            const secondReturn = await DecklistModel.findByIdAndRemove(req.params.id)
+            res.status(201).json({firstReturn,secondReturn})
+        }catch(exception) {
+            res.status(400).json({...exception})
+        }
     }
 })
 

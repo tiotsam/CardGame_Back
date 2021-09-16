@@ -3,7 +3,7 @@ const router = express.Router();
 const ObjectID = require('mongoose').Types.ObjectId;
 const { DeckModel } = require('../models/DeckModel');
 
-// Afficher tous les users
+// Afficher tous les decks
 router.get('/', (req,res) => {
     DeckModel.find((err,docs)=> {
         if(!err) res.send(docs);
@@ -11,7 +11,7 @@ router.get('/', (req,res) => {
     })
 })
 
-// Chercher user par id
+// Chercher deck par id
 router.get('/:id', (req,res, next) => {
     DeckModel.findById(req.params.id, (err,docs)=>{
         if(!err) res.send(docs);
@@ -22,7 +22,7 @@ router.get('/:id', (req,res, next) => {
     })  
 })
 
-// Créer un compte
+// Créer un deck
 router.post('/register', (req,res) => {
     if (!ObjectID.isValid(req.body.collectionId))
     return res.status(400).send("ID unknown : " + req.body.collectionId)
@@ -40,7 +40,7 @@ router.post('/register', (req,res) => {
     }
 })
 
-// Modifier info user
+// Modifier un deck
 router.put('/:id', (req,res) => {
     if (!ObjectID.isValid(req.params.id))
         return res.status(400).send("ID unknown : " + req.params.id)
@@ -62,7 +62,7 @@ router.put('/:id', (req,res) => {
     }
 })
 
-// Supprimer une carte
+// Supprimer un deck
 
 router.delete('/:id', (req,res) => {
     if (!ObjectID.isValid(req.params.id))

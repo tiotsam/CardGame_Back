@@ -9,7 +9,7 @@ const DecklistModel = mongoose.model('Decklist', new Schema({
         required: true
     },
     deckId: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: [mongoose.Schema.Types.ObjectId],
         ref: 'Decks'
     }
 }));
