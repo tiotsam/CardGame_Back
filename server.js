@@ -31,7 +31,7 @@ app.use('/deck/', deckRoutes);
 app.use('/decklist/', decklistRoutes);
 
 // //auth
-// app.use('/log',authRoutes);
+app.use('/log',authRoutes);
 
 // Lancement server
 app.listen(process.env.PORT,()=>{ console.log(`Listening on port ${process.env.PORT}`);})

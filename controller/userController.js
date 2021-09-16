@@ -5,6 +5,7 @@ const { UserModel } = require('../models/UserModel');
 const { CollectionModel } = require('../models/CollectionModel');
 const { DeckModel } = require('../models/DeckModel');
 const { DecklistModel } = require('../models/ListeDeckModel');
+const { signUpErrors } = require('../utils/errors.utils');
 
 // Afficher tous les users
 router.get('/', (req, res) => {
@@ -26,27 +27,40 @@ router.get('/:id', (req, res, next) => {
 })
 
 // Créer un compte
-router.post('/register', (req, res, next) => {
-    const newUser = new UserModel({
-        nom: req.body.nom,
-        prenom: req.body.prenom,
-        mail: req.body.mail,
-        pseudo: req.body.pseudo,
-        image: req.body.image,
-        ban: req.body.ban,
-        password: req.body.password,
-        score: req.body.score,
-        admin: req.body.admin,
-    });
+// router.post('/register', (req, res, next) => {
+//     const newUser = new UserModel({
+//         nom: req.body.nom,
+//         prenom: req.body.prenom,
+//         mail: req.body.mail,
+//         pseudo: req.body.pseudo,
+//         image: req.body.image,
+//         ban: req.body.ban,
+//         password: req.body.password,
+//         score: req.body.score,
+//         admin: req.body.admin,
+//     });
 
-    newUser.save((err, docs) => {
-        if (!err) res.send(docs);
-        else {
-            console.log('Error creating new user : ' + err);
-            next();
-        }
+//     newUser.save((err, docs) => {
+//         if (!err) res.send(docs);
+//         else {
+//             console.log('Error creating new user : ' + err);
+//             next();
+//         }
 
-    })
+//     })
+// })
+
+router.post('/register', async (req,res) => {
+    const {nom,prenom,mail,pseudo,image,ban,password,score,admin} = req.body;
+
+    try{
+        const user = await UserModel.create({nom,prenom,mail,pseudo,image,ban,password,score,admin});
+        res.status(201).json({user: user._id})
+    }
+    catch(err){
+        const errors = signUpErrors(err);
+        res.status(200).send({errors})
+    }
 })
 
 // Modifier info user
