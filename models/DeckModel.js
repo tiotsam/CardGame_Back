@@ -10,6 +10,14 @@ const DeckModel = mongoose.model('Decks', new Schema({
         collectionId: {
             type: String,
             ref: 'Collection'
+        },
+        name: {
+            type: String,
+            required: true
+        },
+        image: {
+            type: String,
+            required: true
         }
 }));
 

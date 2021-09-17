@@ -30,6 +30,8 @@ router.post('/register', (req,res) => {
         const newDeck = new DeckModel({
             cardId: req.body.cardId,
             collectionId: req.body.collectionId,
+            name: req.body.name,
+            image: req.body.image
         });
     
         newDeck.save((err,docs) => {
@@ -48,6 +50,8 @@ router.put('/:id', (req,res) => {
         const updateDeck = {
             cardId: req.body.cardId,
             collectionId: req.body.collectionId,
+            name: req.body.name,
+            image: req.body.image
         };
 
         DeckModel.findByIdAndUpdate(
